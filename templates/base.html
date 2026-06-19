@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container flex justify-between align-center">
+            <div>
+                <h1>Sistema ETI</h1>
+                <small>Congreso Anual de Ecología</small>
+            </div>
+            <nav class="flex align-center gap-2">
+                <a href="/">Inicio</a>
+                {% if session.get('organizador') %}
+                <span>👤 {{ session['organizador'] }}</span>
+                <a href="/logout">Cerrar Sesión</a>
+                {% else %}
+                <a href="/login">¿Eres Organizador?</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <main class="container mt-3">
+        {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+        {% for mensaje in mensajes %}
+        <div class="alert alert-success mb-2">{{ mensaje }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

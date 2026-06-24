@@ -6,7 +6,7 @@
     <h2 class="text-center">Asignar Organizadores</h2>
     <p class="text-center">¿Desea asignar organizadores a trabajos pendientes?</p>
     <div class="text-center mt-4 d-flex justify-content-center align-items-center gap-3">
-        <a href="/asignar" class="btn btn-primary">Asignar</a>
+        <a href="/{{ url_for('asignar') }}" class="btn btn-primary">Asignar</a>
         <form action="/logout" method="POST" class="m-0">
             <button type="submit" class="btn btn-secondary btn">Cerrar Sesión</button>
         </form>

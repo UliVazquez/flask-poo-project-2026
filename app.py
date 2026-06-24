@@ -1,25 +1,20 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.secret_key = "profeapruebemeporfavor"
+app.config.from_pyfile("config.py")
 
+# index.html
 @app.route("/")
 def home():
     return render_template("index.html")
 
+# login.html (login del organizador)
 @app.route("/iniciar-sesion")
 def iniciar_sesion():
     return render_template("login.html")
 
-@app.route("/upload", methods=["POST", "GET"])
-def enviar_trabajo():
-    resultado = ""
-    if "correo" in session:
-        resultado = render_template("error.html")
-    else:
-        resultado = render_template("upload.html")
-    return resultado
-
+# lógica de inicio de sesión (organizador)
 @app.route("/login", methods=["POST", "GET"])
 def login():
     resultado = ""
@@ -32,6 +27,7 @@ def login():
         resultado = redirect(url_for("error.html"))
     return resultado
 
+# lógica de cerrar sesión (organizador)
 @app.route("/logout", methods=["POST", "GET"])
 def logout():
     resultado = ""
@@ -45,5 +41,22 @@ def logout():
         resultado = render_template("error.html")
     return resultado
 
+# lógica de asignar trabajos (organizador)
+# TODO
+
+# upload.html
+@app.route("/upload", methods=["POST", "GET"])
+def enviar_trabajo():
+    resultado = ""
+    if "correo" in session:
+        resultado = render_template("error.html")
+    else:
+        resultado = render_template("upload.html")
+    return resultado
+
+# lógica de carga de archivo en base de datos
+# TODO
+
+# programa principal
 if __name__ == '__main__':
     app.run(debug=True)

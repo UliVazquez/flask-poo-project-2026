@@ -3,19 +3,20 @@
 {% block content %}
 <div class="d-flex justify-content-center align-items-center mt-5">
     <div class="card shadow-sm" style="width: 100%; max-width: 450px;">
-        <div class="card-header bg-primary text-white fw-bold py-3 text-center">Acceso Organizador</div>
+        <div class="card-header bg-primary text-white fw-bold py-3 text-center">Acceso Organizador
+        </div>
         <div class="card-body p-4">
             <p class="text-muted small text-center mb-4">
                 Ingrese sus credenciales para acceder a las funciones de organización del congreso.
             </p>
-            <form method="POST">
+            <form action="/login" method="POST">
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Correo Electrónico</label>
-                    <input type="email" name="correo" class="form-control" placeholder="DNI@congreso.com" required>
+                    <input type="email" name="correo-org" class="form-control" placeholder="DNI@congreso.com" required>
                 </div>
                 <div class="mb-4">
                     <label class="form-label fw-semibold">Contraseña</label>
-                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    <input type="password" name="password-org" class="form-control" placeholder="••••••••" required>
                 </div>
                 <hr class="my-3 text-muted">
                 <div class="d-flex justify-content-between align-items-center mt-3">

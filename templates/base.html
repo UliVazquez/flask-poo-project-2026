@@ -10,26 +10,54 @@
 </head>
 
 <body>
-    <header class="navbar navbar-expand navbar-dark bg-dark border-bottom py-3 px-4 justify-content-between align-items-center">
+    <header
+        class="navbar navbar-expand navbar-dark bg-dark border-bottom py-3 px-4 justify-content-between align-items-center">
         <a href="/" class="navbar-brand fs-3 fw-bold m-0">Sistema ETI</a>
         <div class="d-flex align-items-center gap-4">
             <nav>
                 <ul class="nav nav-pills gap-1">
                     <li class="nav-item">
-                        <a href="/" class="nav-link">Inicio</a>
+                        <form action="/">
+                            <button type="submit" class="nav-link">Inicio</button>
+                        </form>
                     </li>
+                    {% if not session.correo %}
                     <li class="nav-item">
-                        <a href="/upload" class="nav-link">Subir</a>
+                        <form action="/upload" method="POST">
+                            <button type="submit" class="nav-link">Subir</button>
+                        </form>
                     </li>
                 </ul>
             </nav>
             <div class="d-flex align-items-center gap-2">
                 <span class="text-secondary small d-none d-md-inline">¿Sos organizador?</span>
-                <a href="/login" class="btn btn-primary btn-sm px-3 rounded-pill fw-semibold shadow-sm">Iniciar
+                <a href="/iniciar-sesion" class="btn btn-primary btn-sm px-3 rounded-pill fw-semibold shadow-sm">Iniciar
                     Sesión</a>
             </div>
+            {% else %}
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-secondary small d-none d-md-inline">Hola {{ session.correo }}!</span>
+                <form action="/logout" method="POST" class="m-0">
+                    <button type="submit" class="btn btn-primary btn-sm px-3 rounded-pill fw-semibold shadow-sm">
+                        Cerrar Sesión
+                    </button>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container mt-3">
+        {% for cat, msg in messages %}
+        <div class="alert alert-{{ cat }} alert-dismissible fade show" role="alert">
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
     {% block content %}
     {% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

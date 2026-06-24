@@ -1,23 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Iniciar Sesión{% endblock %}
 {% block content %}
-<div class="container-sm">
-    <div class="card mt-3">
-        <div class="card-header">Acceso Organizador</div>
-        <div class="card-body">
-            <p class="mb-2">Ingrese sus credenciales para acceder a las funciones de organización del congreso.</p>
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="card shadow-sm" style="width: 100%; max-width: 450px;">
+        <div class="card-header bg-primary text-white fw-bold py-3 text-center">Acceso Organizador</div>
+        <div class="card-body p-4">
+            <p class="text-muted small text-center mb-4">
+                Ingrese sus credenciales para acceder a las funciones de organización del congreso.
+            </p>
             <form method="POST">
-                <div class="form-group">
-                    <label class="label">Correo Electrónico</label>
-                    <input type="email" name="correo" class="input" placeholder="DNI@congreso.com" required>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Correo Electrónico</label>
+                    <input type="email" name="correo" class="form-control" placeholder="DNI@congreso.com" required>
                 </div>
-                <div class="form-group">
-                    <label class="label">Contraseña</label>
-                    <input type="password" name="password" class="input" required>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Contraseña</label>
+                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
                 </div>
-                <div class="flex justify-between align-center mt-2">
-                    <a href="/" class="btn btn-secondary">Volver</a>
-                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                <hr class="my-3 text-muted">
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <a href="/" class="btn btn-outline-secondary px-3">Volver</a>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">Ingresar</button>
                 </div>
             </form>
         </div>

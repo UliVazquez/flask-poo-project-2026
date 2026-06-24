@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Sistema ETI{% endblock %}
 {% block content %}
-<div class="container-sm">
-    <div class="card text-center mt-3">
-        <h2 class="mb-2">Sistema de Evaluación de Trabajos de Investigación</h2>
-        <p class="mb-3">Congreso Anual de Ecología</p>
-        <div class="flex flex-column gap-2">
-            <a href="/enviar-trabajo" class="btn btn-primary">Enviar Trabajo</a>
-        </div>
+<div class="container mt-5">
+    <h2 class="text-center">Bienvenido al Sistema ETI</h2>
+    <p class="text-center">Este es un sistema para la gestión de trabajos y eventos.</p>
+    <div class="text-center mt-4">
+        <a href="/upload" class="btn btn-primary">Enviar Trabajo</a>
+        <a href="/" class="btn btn-secondary">Ver Estado</a>
     </div>
 </div>
 {% endblock %}

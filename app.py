@@ -4,6 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
 
+from gestor import Gestor
+gestor = Gestor()
+
 # index.html
 @app.route("/")
 def home():
@@ -24,7 +27,7 @@ def login():
         flash("Has iniciado sesión correctamente.", "info")
         resultado = redirect(url_for("home"))
     else:
-        resultado = redirect(url_for("error.html"))
+        resultado = render_template("error.html")
     return resultado
 
 # lógica de cerrar sesión (organizador)
@@ -45,8 +48,8 @@ def logout():
 # TODO
 
 # upload.html
-@app.route("/upload", methods=["POST", "GET"])
-def enviar_trabajo():
+@app.route("/cargar-trabajo", methods=["POST", "GET"])
+def cargar_trabajo():
     resultado = ""
     if "correo" in session:
         resultado = render_template("error.html")
@@ -55,8 +58,37 @@ def enviar_trabajo():
     return resultado
 
 # lógica de carga de archivo en base de datos
-# TODO
+@app.route("/upload", methods = ["POST", "GET"])
+def upload():
+    resultado = ""
+    if request.method == "POST":
+        # Datos del trabajo
+        titulo = request.form["titulo"]
+        resumen = request.form["resumen"]
+        area = request.form["area"]
+        
+        # Datos del autor
+        apellido = request.form["apellido"]
+        nombre = request.form["nombre"]
+        email = request.form["correo"]
+        archivo = request.files.get("archivo")
+        
+        band = gestor.verificar_autor_por_mail(email)
+        
+        if not band:
+            gestor.crear_autor(nombre, apellido, email)
+        
+        nombre_archivo = gestor.generar_nombre_archivo(gestor.get_id_autor_por_mail(email), titulo)
+        ruta = gestor.subir_archivo(archivo, nombre_archivo, app.config["UPLOAD_FOLDER"])
+        gestor.crear_trabajo(titulo, resumen, area, ruta, gestor.get_id_autor_por_mail(email))
+        flash(f"Archivo subido correctamente. ID Trabajo: {gestor.get_id_trabajo_por_ruta_archivo(ruta)}", "info")
+        resultado = redirect(url_for("home"))
+    else:
+        resultado = render_template("error.html")
+    return resultado
 
 # programa principal
 if __name__ == '__main__':
-    app.run(debug=True)
+    with app.app_context():
+        gestor.createDB()
+        app.run(debug=True)

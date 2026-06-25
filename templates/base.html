@@ -23,7 +23,7 @@
                     </li>
                     {% if not session.correo %}
                     <li class="nav-item">
-                        <form action="{{ url_for('enviar_trabajo') }}" method="POST">
+                        <form action="{{ url_for('cargar_trabajo') }}" method="POST">
                             <button type="submit" class="nav-link">Subir</button>
                         </form>
                     </li>

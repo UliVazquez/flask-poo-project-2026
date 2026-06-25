@@ -35,7 +35,7 @@
             </div>
             {% else %}
             <div class="d-flex align-items-center gap-2">
-                <span class="text-secondary small d-none d-md-inline">Hola {{ session.correo }}!</span>
+                <span class="text-secondary small d-none d-md-inline">Hola {{ session.nombre }} {{ session.apellido }}!</span>
                 <form action="{{ url_for('logout') }}" method="POST" class="m-0">
                     <button type="submit" class="btn btn-primary btn-sm px-3 rounded-pill fw-semibold shadow-sm">
                         Cerrar Sesión

@@ -1,85 +1,112 @@
 from __main__ import app
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 
 db = SQLAlchemy(app)
 
-class Autor(db.Model):
-    __tablename__= 'autor'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-    surname = db.Column(db.String(80), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    trabajos = db.relationship('Trabajo', backref='autor', cascade='delete-orphan')
-
+class Organizador(db.Model):
+    __tablename__ = 'organizadores'
+    id = db.Column(db.Integer, primary_key=True)    
+    nombre = db.Column(db.String(50), nullable=False)
+    apellido = db.Column(db.String(50), nullable=False)
+    correo = db.Column(db.String(120), unique=True, nullable=False)
+    clave = db.Column(db.String(100), nullable=False)
     def get_id(self):
         return self.id
-    
     def get_nombre(self):
-        return self.name
-    
+        return self.nombre
     def get_apellido(self):
-        return self.surname
-    
-    def get_email(self):
-        return self.email
-    
-    def get_trabajos(self):
-        return self.trabajos
+        return self.apellido
+    def get_correo(self):
+        return self.correo
+    def verificar_clave(self, clave):
+        return check_password_hash(self.clave, clave)
 
-class Trabajo(db.Model):
-    __tablename__ = 'trabajo'
-
+class Evaluador(db.Model):
+    __tablename__ = 'evaluadores'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    desc = db.Column(db.Text, nullable=False)
-    area = db.Column(db.String(2), nullable=False)
-    estado = db.Column(db.String(10), nullable=False)
-    ruta_archivo_pdf = db.Column(db.String(255), nullable=False)
-    autor_id = db.Column(db.Integer, db.ForeignKey('autor.id'))
-
+    titulo = db.Column(db.String(5))
+    nombre = db.Column(db.String(50), nullable=False)
+    apellido = db.Column(db.String(50), nullable=False)
+    correo = db.Column(db.String(120), unique=True, nullable=False)
+    area = db.Column(db.String(3), nullable=False)    
+    max_trabajos = db.Column(db.Integer, nullable=False, default=3)
+    clave = db.Column(db.String(100), nullable=False)        
+    asignaciones = db.relationship('Asignacion', backref='evaluador', lazy=True)
     def get_id(self):
         return self.id
-    
     def get_titulo(self):
-        return self.title
-    
-    def get_resumen(self):
-        return self.desc
-    
+        return self.titulo
+    def get_nombre(self):
+        return self.nombre
+    def get_apellido(self):
+        return self.apellido
+    def get_correo(self):
+        return self.correo
     def get_area(self):
         return self.area
-    
-    def get_ruta_archivo_pdf(self):
-        return self.ruta_archivo_pdf
+    def get_max_trabajos(self):
+        return self.max_trabajos
+    def get_asignaciones(self):
+        return self.asignaciones
+    def verificar_clave(self, clave):
+        return check_password_hash(self.clave, clave)
 
-class Organizador(db.Model):
-    __tablename__ = 'organizador'
 
+class Trabajo(db.Model):
+    __tablename__ = 'trabajos'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), nullable=False, unique=True)
-    password = db.Column(db.String(120), nullable=False)
-    
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
-    
+    titulo = db.Column(db.String(200), nullable=False)
+    resumen = db.Column(db.Text, nullable=False)
+    area = db.Column(db.String(3), nullable=False)
+    autor_nombre = db.Column(db.String(100), nullable=False)
+    autor_apellido = db.Column(db.String(100), nullable=False)
+    autor_email = db.Column(db.String(120), nullable=False)
+    estado = db.Column(db.String(20), default='Pendiente') 
+    fecha_envio = db.Column(db.DateTime, default=datetime.now)
+    archivo_nombre = db.Column(db.String(255), nullable=True)        
+    asignaciones = db.relationship('Asignacion', backref='trabajo', lazy=True)
     def get_id(self):
         return self.id
-    
-    def get_email(self):
-        return self.email
-    
-class Evaluador(db.Model):
-    __tablename__ = 'evaluador'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    area = db.Column(db.String(2), nullable=False)
-    max_trabajos = db.Column(db.Integer, default=3)
+    def get_titulo(self):
+        return self.titulo
+    def get_resumen(self):
+        return self.resumen
+    def get_area(self):
+        return self.area
+    def get_autor_nombre(self):
+        return self.autor_nombre
+    def get_autor_apellido(self):
+        return self.autor_apellido
+    def get_autor_email(self):
+        return self.autor_email
+    def get_estado(self):
+        return self.estado
+    def get_fecha_evio(self):
+        return self.fecha_envio
+    def get_asignaciones(self):
+        return self.asignaciones
+    def get_archivo_nombre(self):
+        return self.archivo_nombre
 
-class Evaluacion(db.Model):
-    __tablename__ = 'evaluacion'
-    
+class Asignacion(db.Model):
+    __tablename__ = 'asignaciones'
     id = db.Column(db.Integer, primary_key=True)
-    trabajo_id = db.Column(db.Integer, db.ForeignKey("trabajo.id"))
-    evaluador_id = db.Column(db.Integer, db.ForeignKey("evaluador.id"))
+    trabajo_id = db.Column(db.Integer, db.ForeignKey('trabajos.id'), nullable=False)
+    evaluador_id = db.Column(db.Integer, db.ForeignKey('evaluadores.id'), nullable=False)
+    valoracion = db.Column(db.Integer, nullable=True) 
+    comentarios = db.Column(db.Text, nullable=True)
+    fecha_evaluacion = db.Column(db.DateTime, nullable=True)
+    def get_id(self):
+        return self.id
+    def get_trabajo_id(self):
+        return self.trabajo_id
+    def get_evaluador_id(self):
+        return self.evaluador_id
+    def get_valoracion(self):
+        return self.valoracion
+    def get_comentarios(self):
+        return self.comentarios
+    def get_fecha_evaluacion(self):
+        return self.fecha_evaluacion

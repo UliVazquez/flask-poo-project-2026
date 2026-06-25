@@ -6,9 +6,11 @@
     <h2 class="text-center">Asignar Organizadores</h2>
     <p class="text-center">¿Desea asignar organizadores a trabajos pendientes?</p>
     <div class="text-center mt-4 d-flex justify-content-center align-items-center gap-3">
-        <a href="{{ url_for('asignar') }}" class="btn btn-primary">Asignar</a>
-        <form action="/logout" method="POST" class="m-0">
-            <button type="submit" class="btn btn-secondary btn">Cerrar Sesión</button>
+        <form action="{{ url_for('asignar') }}" method="POST" class="m-0">
+            <button type="submit" class="btn btn-primary">Asignar</button>
+        </form>
+        <form action="{{ url_for('logout') }}" method="POST" class="m-0">
+            <button type="submit" class="btn btn-secondary">Cerrar Sesión</button>
         </form>
     </div>
 </div>
@@ -18,7 +20,7 @@
     <p class="text-center">Este es un sistema para la gestión de trabajos y eventos.</p>
     <div class="text-center mt-4">
         <a href="{{ url_for('cargar_trabajo') }}" class="btn btn-primary">Enviar Trabajo</a>
-        <a href="/" class="btn btn-secondary">Ver Estado</a>
+        <a href="#" class="btn btn-secondary">Ver Estado</a>
     </div>
 </div>
 {% endif %}
